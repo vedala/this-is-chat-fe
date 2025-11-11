@@ -15,7 +15,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,12 +38,13 @@
 }
 
 /*
-** Form
+** Chat and Form
 */
 
 #input-form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.25rem;
+  margin-bottom: 4rem;
   position: fixed;
   bottom: 4rem;
   left: 0;
