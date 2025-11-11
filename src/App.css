@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+/*
+** Form
+*/
+
+#input-form {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.25rem;
+  position: fixed;
+  bottom: 4rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  height: 3rem;
+  box-sizing: border-box;
+}
