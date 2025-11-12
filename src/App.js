@@ -1,12 +1,27 @@
 import { useState } from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
   const [messages, setMessages] = useState([]);
 
-  const listMessages = messages.map(message => <li>{message}</li>)
-  function submitMessage(formData) {
+  const listMessages = messages.map(message => <li>{message}</li>);
+
+  async function saveMessageToDb(message) {
+    await axios.post("http://localhost:4000/messages", {
+        message
+      },
+      {
+        headers: {
+          "content-type": "application/json",
+        }
+      },
+    );
+  }
+
+  async function submitMessage(formData) {
     const inputMessage = formData.get("input-msg");
+    await saveMessageToDb(inputMessage);
     console.log("submitMessage: ", inputMessage);
     const newMessages = [...messages, inputMessage];
     setMessages(newMessages);
