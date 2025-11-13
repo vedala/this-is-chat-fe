@@ -1,11 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
 
 function App() {
   const [messages, setMessages] = useState([]);
 
-  const listMessages = messages.map(message => <li>{message}</li>);
+  const listMessages = messages.map(row => <li key={row.id}>{row.message}</li>);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get("http://localhost:4000/messages");
+      setMessages(response.data);
+    };
+
+    fetchData();
+  }, []);
 
   async function saveMessageToDb(message) {
     await axios.post("http://localhost:4000/messages", {
