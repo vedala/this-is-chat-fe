@@ -5,7 +5,7 @@ import axios from 'axios';
 function App() {
   const [messages, setMessages] = useState([]);
 
-  const listMessages = messages.map(row => <li>{row.message}</li>);
+  const listMessages = messages.map(row => <li key={row.id}>{row.message}</li>);
 
   useEffect(() => {
     async function fetchData() {
