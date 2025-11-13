@@ -54,3 +54,7 @@
   height: 3rem;
   box-sizing: border-box;
 }
+
+li {
+  list-style-type: none;
+}
