@@ -5,7 +5,7 @@ import axios from 'axios';
 function App() {
   const [messages, setMessages] = useState([]);
 
-  const listMessages = messages.map(row => <li key={row.id}>{row.message}</li>);
+  const listMessages = messages.map(row => <li key={row._id}>{row.message}</li>);
 
   useEffect(() => {
     async function fetchData() {
@@ -17,7 +17,7 @@ function App() {
   }, []);
 
   async function saveMessageToDb(message) {
-    await axios.post("http://localhost:4000/messages", {
+    const response = await axios.post("http://localhost:4000/messages", {
         message
       },
       {
@@ -26,13 +26,14 @@ function App() {
         }
       },
     );
+
+    return response.data;
   }
 
   async function submitMessage(formData) {
     const inputMessage = formData.get("input-msg");
-    await saveMessageToDb(inputMessage);
-    console.log("submitMessage: ", inputMessage);
-    const newMessages = [...messages, inputMessage];
+    const dbId = await saveMessageToDb(inputMessage);
+    const newMessages = [...messages, { _id: dbId, message: inputMessage}];
     setMessages(newMessages);
   }
 
