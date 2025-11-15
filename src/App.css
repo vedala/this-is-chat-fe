@@ -41,12 +41,16 @@
 ** Chat and Form
 */
 
+#messages-window {
+  position: relative;
+  height: 100%;
+}
+
 #input-form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.25rem;
-  margin-bottom: 4rem;
   position: fixed;
-  bottom: 4rem;
+  bottom: 2rem;
   left: 0;
   right: 0;
   display: flex;
