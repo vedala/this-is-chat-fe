@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`${process.env.CHAT_API_URL}/messages`);
+      const response = await axios.get(`${process.env.REACT_APP_CHAT_API_URL}/messages`);
       setMessages(response.data);
     };
 
@@ -17,7 +17,7 @@ function App() {
   }, []);
 
   async function saveMessageToDb(message) {
-    const response = await axios.post(`${process.env.CHAT_API_URL}/messages`, {
+    const response = await axios.post(`${process.env.REACT_APP_CHAT_API_URL}/messages`, {
         message
       },
       {
