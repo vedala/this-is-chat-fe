@@ -30,7 +30,10 @@ function App() {
     return response.data;
   }
 
-  async function submitMessage(formData) {
+  async function submitMessage(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
     const inputMessage = formData.get("input-msg");
     const dbId = await saveMessageToDb(inputMessage);
     const newMessages = [...messages, { _id: dbId, message: inputMessage}];
@@ -44,7 +47,7 @@ function App() {
       </header>
       <div id="messages-window">
         <ul>{listMessages}</ul>
-        <form id="input-form" action={submitMessage}>
+        <form id="input-form" onSubmit={submitMessage}>
           <input id="input-msg" name="input-msg" autoComplete="off" />
           <button>Send</button>
         </form>
