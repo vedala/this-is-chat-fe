@@ -4,6 +4,7 @@ import axios from 'axios';
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   const listMessages = messages.map(row => <li key={row._id}>{row.message}</li>);
 
@@ -38,6 +39,7 @@ function App() {
     const dbId = await saveMessageToDb(inputMessage);
     const newMessages = [...messages, { _id: dbId, message: inputMessage}];
     setMessages(newMessages);
+    setInputValue("");
   }
 
   return (
@@ -48,7 +50,13 @@ function App() {
       <div id="messages-window">
         <ul>{listMessages}</ul>
         <form id="input-form" onSubmit={submitMessage}>
-          <input id="input-msg" name="input-msg" autoComplete="off" />
+          <input
+            id="input-msg"
+            name="input-msg"
+            autoComplete="off"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
           <button>Send</button>
         </form>
       </div>
