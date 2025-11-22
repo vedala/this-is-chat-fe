@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
-import axios from 'axios';
 
 function App() {
   const [messages, setMessages] = useState([]);
