@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -9,21 +10,23 @@ function App() {
   const listMessages = messages.map(row => <li key={row._id}>{row.message}</li>);
 
   useEffect(() => {
-    ws.current = new WebSocket(process.env.REACT_APP_CHAT_API_URL);
+    async function fetchData() {
+      const url = new URL("messages", process.env.REACT_APP_CHAT_API_URL);
+      const response = await axios.get(url);
+      setMessages(response.data);
+    };
 
-    // async function fetchData() {
-    //   const url = new URL("messages", process.env.REACT_APP_CHAT_API_URL);
-    //   const response = await axios.get(url);
-    //   setMessages(response.data);
-    // };
+    fetchData();
+  });
+
+  useEffect(() => {
+    ws.current = new WebSocket(process.env.REACT_APP_CHAT_API_URL);
 
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
       setMessages((prev) => [...prev, data.message]);
     };
-
-    // fetchData();
 
     return () => ws.current.close();
   }, []);
