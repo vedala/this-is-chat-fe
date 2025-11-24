@@ -31,29 +31,11 @@ function App() {
     return () => ws.current.close();
   }, []);
 
-  // async function saveMessageToDb(message) {
-  //   const url = new URL("messages", process.env.REACT_APP_CHAT_API_URL);
-  //   const response = await axios.post(url, {
-  //       message
-  //     },
-  //     {
-  //       headers: {
-  //         "content-type": "application/json",
-  //       }
-  //     },
-  //   );
-
-  //   return response.data;
-  // }
-
   async function submitMessage(event) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
     const inputMessage = formData.get("input-msg");
-    // const dbId = await saveMessageToDb(inputMessage);
-    // const newMessages = [...messages, { _id: dbId, message: inputMessage}];
-    // setMessages(newMessages);
 
     if (!inputMessage.trim()) return;
 
