@@ -2,12 +2,24 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import axios from 'axios';
 
+
 function App() {
+  const [userId, setUserId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const ws = useRef(null);
 
   const listMessages = messages.map(row => <li key={row._id}>{row.message}</li>);
+
+  useEffect(() => {
+    let id = localStorage.getItem("userId");
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem("userId", id);
+    }
+
+    setUserId(id);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -17,7 +29,7 @@ function App() {
     };
 
     fetchData();
-  });
+  }, []);
 
   useEffect(() => {
     ws.current = new WebSocket(process.env.REACT_APP_CHAT_API_URL);
@@ -41,7 +53,8 @@ function App() {
 
     ws.current.send(
       JSON.stringify({
-        text: inputMessage
+        text: inputMessage,
+        userId: userId
       })
     );
 
