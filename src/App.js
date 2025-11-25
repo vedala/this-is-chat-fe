@@ -12,10 +12,10 @@ function App() {
   const listMessages = messages.map(row => <li key={row._id}>{row.message}</li>);
 
   useEffect(() => {
-    let id = localStorage.getItem("userId");
+    let id = sessionStorage.getItem("userId");
     if (!id) {
       id = crypto.randomUUID();
-      localStorage.setItem("userId", id);
+      sessionStorage.setItem("userId", id);
     }
 
     setUserId(id);
