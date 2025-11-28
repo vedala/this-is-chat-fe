@@ -9,7 +9,18 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const ws = useRef(null);
 
-  const listMessages = messages.map(row => <li key={row._id}>{row.message}</li>);
+  const listMessages = messages.map((row) => {
+    const isMine = row.userId === userId;
+
+    return (
+      <div
+        key={row._id}
+        className={`message ${isMine ? "mine" : "theirs"}`}
+      >
+        {row.message}
+      </div>
+    );
+  });
 
   useEffect(() => {
     let id = sessionStorage.getItem("userId");
@@ -67,7 +78,9 @@ function App() {
         Welcome to This-Is-Chat
       </header>
       <div id="messages-window">
-        <ul>{listMessages}</ul>
+        <div className="message-list">
+          {listMessages}
+        </div>
         <form id="input-form" onSubmit={submitMessage}>
           <input
             id="input-msg"
