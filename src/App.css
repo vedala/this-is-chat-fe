@@ -46,6 +46,12 @@
   height: 100%;
 }
 
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 #input-form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.25rem;
@@ -61,4 +67,20 @@
 
 li {
   list-style-type: none;
+}
+
+.message {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.mine {
+  align-self: flex-end;
+  background: #d1ffd6;
+}
+
+.theirs {
+  align-self: flex-start;
+  background: #eaeaea;
 }
