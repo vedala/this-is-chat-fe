@@ -50,6 +50,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 #input-form {
@@ -63,10 +65,6 @@
   justify-content: center;
   height: 3rem;
   box-sizing: border-box;
-}
-
-li {
-  list-style-type: none;
 }
 
 .message {
