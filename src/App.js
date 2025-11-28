@@ -13,12 +13,12 @@ function App() {
     const isMine = row.userId === userId;
 
     return (
-      <li
+      <div
         key={row._id}
         className={`message ${isMine ? "mine" : "theirs"}`}
       >
         {row.message}
-      </li>
+      </div>
     );
   });
 
