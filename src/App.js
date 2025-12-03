@@ -7,6 +7,7 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const bottomRef = useRef(null);
   const ws = useRef(null);
 
   const listMessages = messages.map((row) => {
@@ -54,6 +55,10 @@ function App() {
     return () => ws.current.close();
   }, []);
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   async function submitMessage(event) {
     event.preventDefault();
     const form = event.target;
@@ -80,6 +85,7 @@ function App() {
       <div className="messages-window">
         <div className="message-list">
           {listMessages}
+          <div ref={bottomRef}></div>
         </div>
         <form className="input-form" onSubmit={submitMessage}>
           <input
