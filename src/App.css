@@ -65,11 +65,19 @@ html, body, #root {
 
 .input-form {
   background: rgba(0, 0, 0, 0.15);
-  padding: 0.25rem;
-  bottom: 2rem;
-  left: 0;
-  right: 0;
+  padding: 0.5rem 6rem;
   box-sizing: border-box;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.input-form > input {
+  flex: 1;
+}
+
+.input-form > button {
+  margin-left: 0.25rem;
 }
 
 .message {
