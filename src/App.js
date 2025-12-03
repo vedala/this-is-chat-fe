@@ -80,7 +80,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        Welcome to This-Is-Chat
+        This-Is-Chat
       </header>
       <div className="messages-window">
         <div className="message-list">
