@@ -77,11 +77,11 @@ function App() {
       <header className="App-header">
         Welcome to This-Is-Chat
       </header>
-      <div id="messages-window">
+      <div className="messages-window">
         <div className="message-list">
           {listMessages}
         </div>
-        <form id="input-form" onSubmit={submitMessage}>
+        <form className="input-form" onSubmit={submitMessage}>
           <input
             id="input-msg"
             name="input-msg"
