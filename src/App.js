@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 function App() {
@@ -9,7 +10,9 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const bottomRef = useRef(null);
   const ws = useRef(null);
+  const { user } = useAuth0();
 
+console.log("user=", user);
   const listMessages = messages.map((row) => {
     const isMine = row.userId === userId;
 
