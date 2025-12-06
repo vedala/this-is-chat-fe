@@ -6,36 +6,14 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Loading from './Loading';
 
 function Home() {
-  const [userId, setUserId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const bottomRef = useRef(null);
   const ws = useRef(null);
-  const { user } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
 
-console.log("user=", user);
-  const listMessages = messages.map((row) => {
-    const isMine = row.userId === userId;
 
-    return (
-      <div
-        key={row._id}
-        className={`message ${isMine ? "mine" : "theirs"}`}
-      >
-        {row.message}
-      </div>
-    );
-  });
 
-  useEffect(() => {
-    let id = sessionStorage.getItem("userId");
-    if (!id) {
-      id = crypto.randomUUID();
-      sessionStorage.setItem("userId", id);
-    }
-
-    setUserId(id);
-  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -62,6 +40,22 @@ console.log("user=", user);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  if (!isAuthenticated) return null;
+  const userId = user.sub;
+
+  const listMessages = messages.map((row) => {
+    const isMine = row.userId === userId;
+
+    return (
+      <div
+        key={row._id}
+        className={`message ${isMine ? "mine" : "theirs"}`}
+      >
+        {row.message}
+      </div>
+    );
+  });
 
   async function submitMessage(event) {
     event.preventDefault();
