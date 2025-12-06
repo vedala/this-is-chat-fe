@@ -39,7 +39,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "dotenv": "^17.2.3"
-  }
+  "devDependencies": {}
 }
