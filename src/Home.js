@@ -10,32 +10,58 @@ function Home() {
   const [inputValue, setInputValue] = useState("");
   const bottomRef = useRef(null);
   const ws = useRef(null);
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
 
 
 
   useEffect(() => {
     async function fetchData() {
-      const url = new URL("messages", process.env.REACT_APP_CHAT_API_URL);
-      const response = await axios.get(url);
-      setMessages(response.data);
+      try {
+        const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+
+        const url = new URL("messages", process.env.REACT_APP_CHAT_API_URL);
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setMessages(response.data);
+      } catch (e) {
+        console.error("Error in fetching message, e=", e);
+      }
     };
 
-    fetchData();
-  }, []);
+    if (isAuthenticated) fetchData();
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
-    ws.current = new WebSocket(process.env.REACT_APP_CHAT_API_URL);
+    if (!isAuthenticated) return;
 
-    ws.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+    async function connectWS() {
+      const token = await getAccessTokenSilently({
+        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+      });
 
-      setMessages((prev) => [...prev, data.message]);
-    };
+      const wsUrl = `${process.env.REACT_APP_CHAT_API_URL.replace("http", "ws")}?token=${token}`;
+console.log("wsUrl=", wsUrl);
+      ws.current = new WebSocket(wsUrl);
 
-    return () => ws.current.close();
-  }, []);
+      ws.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        setMessages((prev) => [...prev, data.message]);
+      };
+    }
+    connectWS();
+
+    return () => {
+      if (ws.current) ws.current.close();
+    }
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
