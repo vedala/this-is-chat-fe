@@ -39,12 +39,16 @@ function Home() {
   }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || ws.current) return;
+
+    let cancelled = false;
 
     async function connectWS() {
       const token = await getAccessTokenSilently({
         audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       });
+
+      if (cancelled) return;
 
       const wsUrl = `${process.env.REACT_APP_CHAT_API_URL.replace("http", "ws")}?token=${token}`;
 console.log("wsUrl=", wsUrl);
@@ -55,13 +59,23 @@ console.log("wsUrl=", wsUrl);
 
         setMessages((prev) => [...prev, data.message]);
       };
+
+      ws.current.onclose = (event) => {
+        ws.current = null;
+        if (event.code === 4002) {
+          connectWS();
+        }
+      };
     }
+
     connectWS();
 
     return () => {
+      cancelled = true;
       if (ws.current) ws.current.close();
+      ws.current = null;
     }
-  }, [isAuthenticated, getAccessTokenSilently]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
