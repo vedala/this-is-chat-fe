@@ -23,7 +23,7 @@ function NavBar() {
       )}
       { isAuthenticated && (
         <>
-          <span className="logged-in-user">Logged in as: {user?.name}</span>
+          <span className="logged-in-user">Logged in user: {user?.sub}</span>
           <LogoutButton />
         </>
       )}
