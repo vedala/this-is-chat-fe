@@ -110,3 +110,10 @@ html, body, #root {
 .logged-in-user {
   margin-right: 1rem;
 }
+
+.username {
+  background-color: #7c8ea5;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: #ffffff;
+}
