@@ -51,7 +51,6 @@ function Home() {
       if (cancelled) return;
 
       const wsUrl = `${process.env.REACT_APP_CHAT_API_URL.replace("http", "ws")}?token=${token}`;
-console.log("wsUrl=", wsUrl);
       ws.current = new WebSocket(wsUrl);
 
       ws.current.onmessage = (event) => {
