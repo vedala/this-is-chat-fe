@@ -7,12 +7,14 @@ import {
 import './App.css';
 import Landing from "./Landing";
 import Home from "./Home";
+import NavBar from "./NavBar";
 
 function App() {
 
   return (
     <Router>
-      <div className="App">
+      <div>
+        <NavBar />
         <Routes>
           <Route
             path="/"
