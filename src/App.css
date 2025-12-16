@@ -4,7 +4,7 @@ html, body, #root {
 }
 
 .App {
-  height: 100vh;
+  height: 90vh;    /* changed from 100 to 90 for quick fix, verify and improve */
   text-align: center;
   display: flex;
   flex-direction: column;
