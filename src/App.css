@@ -41,6 +41,11 @@ html, body, #root {
   }
 }
 
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 /*
 ** Chat and Form
 */
