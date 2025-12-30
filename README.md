@@ -49,4 +49,4 @@ The application is deployed to Render using their free-tier hosting.
 
 ### Multi-room feature
 
-Working on adding multi-room feature to the application
+Working on adding multi-room feature to the application.
