@@ -122,3 +122,35 @@ html, body, #root {
   padding-right: 0.5rem;
   color: #ffffff;
 }
+
+/*
+** Rooms and messages
+*/
+
+.rooms-and-messages {
+  display: flex;
+  height: 90vh;
+}
+
+.room-list {
+  padding: 1rem 1rem;
+  min-width: 8rem;
+  flex: 0 1 auto;
+  white-space: nowrap;
+  text-align: left;
+  border-right: 2px solid #777777;
+}
+
+.room {
+  color: #333333;
+}
+
+.room:hover {
+  background: #f0f0f0;
+}
+
+.room.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}

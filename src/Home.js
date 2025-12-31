@@ -7,11 +7,12 @@ import Loading from './Loading';
 
 function Home() {
   const [messages, setMessages] = useState([]);
+  const [rooms,    setRooms]    = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [activeRoom, setActiveRoom] = useState("");
   const bottomRef = useRef(null);
   const ws = useRef(null);
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-
 
 
 
@@ -23,15 +24,42 @@ function Home() {
         });
 
         const url = new URL("messages", process.env.REACT_APP_CHAT_API_URL);
+        const response = await axios.get(url.toString(), {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            room: activeRoom
+          }
+        });
+
+        setMessages(response.data);
+      } catch (e) {
+        console.error("Error in fetching messages, e=", e);
+      }
+    };
+
+    if (isAuthenticated) fetchData();
+  }, [activeRoom, isAuthenticated, getAccessTokenSilently]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+
+        const url = new URL("rooms", process.env.REACT_APP_CHAT_API_URL);
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        setMessages(response.data);
+        setRooms(response.data);
+        setActiveRoom(response.data[0].name);
       } catch (e) {
-        console.error("Error in fetching message, e=", e);
+        console.error("Error in fetching rooms, e=", e);
       }
     };
 
@@ -96,6 +124,22 @@ function Home() {
     );
   });
 
+  const listOfRooms = rooms.map((room) => {
+    return (
+      <div
+        key={room._id}
+        className={activeRoom === room.name ? "room active" : "room"}
+        onClick={() => roomClicked(room.name)}
+      >
+        {room.name}
+      </div>
+    )
+  });
+
+  function roomClicked(roomName) {
+    setActiveRoom(roomName);
+  }
+
   async function submitMessage(event) {
     event.preventDefault();
     const form = event.target;
@@ -107,7 +151,8 @@ function Home() {
     ws.current.send(
       JSON.stringify({
         text: inputMessage,
-        userId: userId
+        userId: userId,
+        room: activeRoom
       })
     );
 
@@ -119,21 +164,26 @@ function Home() {
       <header className="App-header">
         This-Is-Chat
       </header>
-      <div className="messages-window">
-        <div className="message-list">
-          {listMessages}
-          <div ref={bottomRef}></div>
+      <div className="rooms-and-messages">
+        <div className="room-list">
+          {listOfRooms}
         </div>
-        <form className="input-form" onSubmit={submitMessage}>
-          <input
-            id="input-msg"
-            name="input-msg"
-            autoComplete="off"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          <button>Send</button>
-        </form>
+        <div className="messages-window">
+          <div className="message-list">
+            {listMessages}
+            <div ref={bottomRef}></div>
+          </div>
+          <form className="input-form" onSubmit={submitMessage}>
+            <input
+              id="input-msg"
+              name="input-msg"
+              autoComplete="off"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button>Send</button>
+          </form>
+        </div>
       </div>
     </div>
   );
