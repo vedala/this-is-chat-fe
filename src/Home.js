@@ -7,20 +7,11 @@ import Loading from './Loading';
 
 function Home() {
   const [messages, setMessages] = useState([]);
+  const [rooms,    setRooms]    = useState([]);
   const [inputValue, setInputValue] = useState("");
   const bottomRef = useRef(null);
   const ws = useRef(null);
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const rooms = [
-    {
-      _id: 1,
-      name: "Room-One"
-    },
-    {
-      _id: 2,
-      name: "Room-Two"
-    }
-  ]
 
 
 
@@ -40,7 +31,30 @@ function Home() {
 
         setMessages(response.data);
       } catch (e) {
-        console.error("Error in fetching message, e=", e);
+        console.error("Error in fetching messages, e=", e);
+      }
+    };
+
+    if (isAuthenticated) fetchData();
+  }, [isAuthenticated, getAccessTokenSilently]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+
+        const url = new URL("rooms", process.env.REACT_APP_CHAT_API_URL);
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setRooms(response.data);
+      } catch (e) {
+        console.error("Error in fetching rooms, e=", e);
       }
     };
 
