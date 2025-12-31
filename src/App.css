@@ -129,7 +129,7 @@ html, body, #root {
 
 .rooms-and-messages {
   display: flex;
-  height: 95vh;
+  height: 90vh;
 }
 
 .room-list {
