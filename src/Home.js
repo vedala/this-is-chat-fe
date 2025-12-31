@@ -11,7 +11,16 @@ function Home() {
   const bottomRef = useRef(null);
   const ws = useRef(null);
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-
+  const rooms = [
+    {
+      _id: 1,
+      name: "Room-One"
+    },
+    {
+      _id: 2,
+      name: "Room-Two"
+    }
+  ]
 
 
 
@@ -96,6 +105,16 @@ function Home() {
     );
   });
 
+  const listOfRooms = rooms.map((room) => {
+    return (
+      <div
+        key={room._id}
+      >
+        {room.name}
+      </div>
+    )
+  });
+
   async function submitMessage(event) {
     event.preventDefault();
     const form = event.target;
@@ -121,8 +140,7 @@ function Home() {
       </header>
       <div className="rooms-and-messages">
         <div className="room-list">
-          <div>room-1</div>
-          <div>room-2</div>
+          {listOfRooms}
         </div>
         <div className="messages-window">
           <div className="message-list">
