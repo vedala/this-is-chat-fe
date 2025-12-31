@@ -9,7 +9,7 @@ function Home() {
   const [messages, setMessages] = useState([]);
   const [rooms,    setRooms]    = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [activeRoom, setActiveRoom] = useState("Room-Friends");
+  const [activeRoom, setActiveRoom] = useState("");
   const bottomRef = useRef(null);
   const ws = useRef(null);
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -57,6 +57,7 @@ function Home() {
         });
 
         setRooms(response.data);
+        setActiveRoom(response.data[0].name);
       } catch (e) {
         console.error("Error in fetching rooms, e=", e);
       }
