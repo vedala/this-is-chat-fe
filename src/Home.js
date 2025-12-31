@@ -144,7 +144,8 @@ function Home() {
     ws.current.send(
       JSON.stringify({
         text: inputMessage,
-        userId: userId
+        userId: userId,
+        room: activeRoom
       })
     );
 
