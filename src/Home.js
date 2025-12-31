@@ -127,6 +127,7 @@ function Home() {
     return (
       <div
         key={room._id}
+        className={activeRoom === room.name ? "room active" : "room"}
         onClick={() => roomClicked(room.name)}
       >
         {room.name}
