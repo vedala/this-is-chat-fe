@@ -127,11 +127,16 @@ function Home() {
     return (
       <div
         key={room._id}
+        onClick={() => roomClicked(room.name)}
       >
         {room.name}
       </div>
     )
   });
+
+  function roomClicked(roomName) {
+    setActiveRoom(roomName);
+  }
 
   async function submitMessage(event) {
     event.preventDefault();
