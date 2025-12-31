@@ -119,21 +119,27 @@ function Home() {
       <header className="App-header">
         This-Is-Chat
       </header>
-      <div className="messages-window">
-        <div className="message-list">
-          {listMessages}
-          <div ref={bottomRef}></div>
+      <div className="rooms-and-messages">
+        <div className="room-list">
+          <div>room-1</div>
+          <div>room-2</div>
         </div>
-        <form className="input-form" onSubmit={submitMessage}>
-          <input
-            id="input-msg"
-            name="input-msg"
-            autoComplete="off"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          <button>Send</button>
-        </form>
+        <div className="messages-window">
+          <div className="message-list">
+            {listMessages}
+            <div ref={bottomRef}></div>
+          </div>
+          <form className="input-form" onSubmit={submitMessage}>
+            <input
+              id="input-msg"
+              name="input-msg"
+              autoComplete="off"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button>Send</button>
+          </form>
+        </div>
       </div>
     </div>
   );
