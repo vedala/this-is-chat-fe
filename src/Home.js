@@ -9,6 +9,7 @@ function Home() {
   const [messages, setMessages] = useState([]);
   const [rooms,    setRooms]    = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [activeRoom, setActiveRoom] = useState("Room-Friends");
   const bottomRef = useRef(null);
   const ws = useRef(null);
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -23,10 +24,13 @@ function Home() {
         });
 
         const url = new URL("messages", process.env.REACT_APP_CHAT_API_URL);
-        const response = await axios.get(url, {
+        const response = await axios.get(url.toString(), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            room: activeRoom
+          }
         });
 
         setMessages(response.data);
@@ -36,7 +40,7 @@ function Home() {
     };
 
     if (isAuthenticated) fetchData();
-  }, [isAuthenticated, getAccessTokenSilently]);
+  }, [activeRoom, isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
     async function fetchData() {
