@@ -140,3 +140,17 @@ html, body, #root {
   text-align: left;
   border-right: 2px solid #777777;
 }
+
+.room {
+  color: #333333;
+}
+
+.room:hover {
+  background: #f0f0f0;
+}
+
+.room.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
