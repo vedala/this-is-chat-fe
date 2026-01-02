@@ -9,6 +9,7 @@ function Home() {
   const [messages, setMessages] = useState([]);
   const [rooms,    setRooms]    = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [roomNameInput, setRoomNameInput] = useState("");
   const [activeRoom, setActiveRoom] = useState("");
   const bottomRef = useRef(null);
   const ws = useRef(null);
@@ -140,6 +141,39 @@ function Home() {
     setActiveRoom(roomName);
   }
 
+  async function createRoom(event) {
+    event.preventDefault();
+    if (!roomNameInput.trim()) return;
+
+    try {
+      const token = await getAccessTokenSilently({
+        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+      });
+
+      const url = new URL("rooms", process.env.REACT_APP_CHAT_API_URL);
+      await axios.post(url.toString(), {
+        name: roomNameInput.trim()
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Refresh rooms list
+      const roomsResponse = await axios.get(url.toString(), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setRooms(roomsResponse.data);
+      setActiveRoom(roomNameInput.trim());
+      setRoomNameInput("");
+    } catch (e) {
+      console.error("Error in creating room, e=", e);
+    }
+  }
+
   async function submitMessage(event) {
     event.preventDefault();
     const form = event.target;
@@ -165,8 +199,22 @@ function Home() {
         This-Is-Chat
       </header>
       <div className="rooms-and-messages">
-        <div className="room-list">
-          {listOfRooms}
+        <div className="rooms-panel">
+          <div className="room-list">
+            {listOfRooms}
+          </div>
+          <form className="create-room-form" onSubmit={createRoom}>
+            <input
+              type="text"
+              placeholder="Room name"
+              value={roomNameInput}
+              onChange={(e) => setRoomNameInput(e.target.value)}
+              autoComplete="off"
+            />
+            <button className="create-room-button" type="submit">
+              Create New Room
+            </button>
+          </form>
         </div>
         <div className="messages-window">
           <div className="message-list">
