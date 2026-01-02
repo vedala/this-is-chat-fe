@@ -132,7 +132,7 @@ html, body, #root {
   height: 90vh;
 }
 
-.room-list {
+.rooms-panel {
   padding: 1rem 1rem;
   min-width: 8rem;
   flex: 0 1 auto;
@@ -153,4 +153,8 @@ html, body, #root {
   background: #007bff;
   color: white;
   border-color: #007bff;
+}
+
+.create-room-button {
+  margin-top: 2rem;
 }

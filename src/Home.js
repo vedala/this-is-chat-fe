@@ -165,8 +165,13 @@ function Home() {
         This-Is-Chat
       </header>
       <div className="rooms-and-messages">
-        <div className="room-list">
-          {listOfRooms}
+        <div className="rooms-panel">
+          <div className="room-list">
+            {listOfRooms}
+          </div>
+          <button className="create-room-button">
+            Create New Room
+          </button>
         </div>
         <div className="messages-window">
           <div className="message-list">
