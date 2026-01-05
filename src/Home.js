@@ -11,11 +11,44 @@ function Home() {
   const [inputValue, setInputValue] = useState("");
   const [roomNameInput, setRoomNameInput] = useState("");
   const [activeRoom, setActiveRoom] = useState("");
+  const [backendReady, setBackendReady] = useState(false);
   const bottomRef = useRef(null);
   const ws = useRef(null);
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
+  // Check if backend is awake/ready
+  useEffect(() => {
+    if (!isAuthenticated) return;
 
+    async function wakeUpBackend() {
+      const maxRetries = 15;
+      const retryDelay = 10000; // 10 seconds - Render backends take longer to wake up
+
+      for (let i = 0; i < maxRetries; i++) {
+        try {
+          const url = new URL("health", process.env.REACT_APP_CHAT_API_URL);
+          await axios.get(url.toString(), {
+            timeout: 5000,
+          });
+
+          // Backend is awake
+          setBackendReady(true);
+          return;
+        } catch (e) {
+          // If it's a network error or timeout, backend might be sleeping
+          if (i < maxRetries - 1) {
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
+          } else {
+            // Last retry failed, but set ready anyway to show the app
+            // (user will see error messages if backend is truly down)
+            setBackendReady(true);
+          }
+        }
+      }
+    }
+
+    wakeUpBackend();
+  }, [isAuthenticated]);
 
   useEffect(() => {
     async function fetchData() {
@@ -110,6 +143,22 @@ function Home() {
   }, [messages]);
 
   if (!isAuthenticated) return null;
+
+  // Show loading message while waiting for backend to wake up
+  if (!backendReady) {
+    return (
+      <div className="App">
+        <header className="App-header">
+          This-Is-Chat
+        </header>
+        <div className="backend-wakeup-message">
+          <p>Waking up backend...</p>
+          <p>Please wait a moment.</p>
+        </div>
+      </div>
+    );
+  }
+
   const userId = user.sub;
 
   const listMessages = messages.map((row) => {
