@@ -172,3 +172,14 @@ html, body, #root {
   padding: 0.5rem;
   cursor: pointer;
 }
+
+.backend-wakeup-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1.2rem;
+  color: #333333;
+  gap: 1rem;
+}
